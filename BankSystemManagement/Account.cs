@@ -2,18 +2,15 @@
 using BankManagement;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Reflection.Metadata;
+using BankSystemManagement;
 
 namespace BankManagement
 {
-    public class Account
+    public class Account:User
     {
-        public string AccountNumber { get; set; }
-        public string IdOfBank { get; set; }
-        public string AccountHolderName { get; set; }
-        public string AccountPassWord { get; set; }
-        public string AccountUserName { get; set; }
-        public string AccountUserCity { get; set; }
+        public string? AccountNumber { get; set; }
+        public string? IdOfBank { get; set; }
+        public string? AccountHolderName { get; set; }
         public double AccountAmount = 0;
         const string nameRegex = @"^[a-zA-Z ]+$";
         public List<TransactionHistory> TransactionHistoryData = new List<TransactionHistory>();
@@ -33,18 +30,18 @@ namespace BankManagement
 
 
                 Console.WriteLine("Enter Bank id which you want to create:");
-                string bankIdNumber;
+                string? bankIdNumber;
 
                 try
                 {
                     bankIdNumber = Console.ReadLine();
                 }
-                catch (FormatException ex)
+                catch (FormatException)
                 {
                     Console.WriteLine("Enter valid Bank id number");
                     goto enterBankIdNumber;
                 }
-                if (bankIdNumber.Length < 3)
+                if (bankIdNumber!.Length < 3)
                 {
                     Console.WriteLine("Enter valid bank id");
                     goto enterBankIdNumber;
@@ -67,48 +64,48 @@ namespace BankManagement
                     Bank bankObject = BankManagement.GetBankById(bankIdNumber);
 
 
-                    string accountName;
+                    string? accountName;
                 enterAccountName: Console.WriteLine("Enter Account Holder Name: ");
                     accountName = Console.ReadLine();
 
                     Regex r = new Regex(nameRegex);
 
-                    if (!r.IsMatch(accountName) || accountName == "")
+                    if (!r.IsMatch(accountName!) || accountName == "")
                     {
                         Console.WriteLine("Enter string as name");
                         goto enterAccountName;
 
                     }
-                    else if (accountName.Length < 3)
+                    else if (accountName!.Length < 3)
                     {
                         Console.WriteLine("Account Holder name should be more than 3 letters");
                         goto enterAccountName;
                     }
-                    string accountUserName;
+                    string? accountUserName;
                 enterAccountUserName: Console.WriteLine("Enter Account User Name: ");
                     accountUserName = Console.ReadLine();
                     Regex re = new Regex(nameRegex);
 
-                    if (!re.IsMatch(accountUserName) || accountUserName == "")
+                    if (!re.IsMatch(accountUserName!) || accountUserName == "")
                     {
                         Console.WriteLine("Enter string as name");
                         goto enterAccountUserName;
 
                     }
-                    string accountPassword;
+                    string? accountPassword;
                 enterAccountPassword: Console.WriteLine("Enter Account Password: ");
                     accountPassword = Console.ReadLine();
-                    if (accountPassword.Length < 8 || accountPassword.Length > 15)
+                    if (accountPassword!.Length < 8 || accountPassword.Length > 15)
                     {
                         Console.WriteLine("Account Password should be more than 8 and less than 15 characters");
-                        goto enterAccountName;
+                        goto enterAccountPassword;
                     }
-                    string accountUserCity;
+                    string? accountUserCity;
                 enterAccountUserCity: Console.WriteLine("Enter Account User City: ");
                     accountUserCity = Console.ReadLine();
                     Regex rc = new Regex(nameRegex);
 
-                    if (!rc.IsMatch(accountUserCity) || accountUserCity == "")
+                    if (!rc.IsMatch(accountUserCity!) || accountUserCity == "")
                     {
                         Console.WriteLine("Enter string as name");
                         goto enterAccountUserCity;
@@ -119,9 +116,9 @@ namespace BankManagement
                     ac.AccountNumber = accountName.Substring(0, 3) + DateTime.Now.ToString("ddMMyyyy")+ DateTime.Now.ToString("HHmmss");
                     ac.AccountHolderName = accountName;
                     ac.IdOfBank = bankIdNumber;
-                    ac.AccountPassWord = accountPassword;
-                    ac.AccountUserName= accountUserName;
-                    ac.AccountUserCity= accountUserCity;
+                    ac.PassWord = accountPassword;
+                    ac.UserName = accountUserName;
+                    ac.UserCity = accountUserCity;
                     Console.WriteLine("Account Id is: "+ac.AccountNumber);
                     foreach (var userAccount in bankObject.accounts)
                     {
@@ -149,18 +146,18 @@ namespace BankManagement
 
 
                 Console.WriteLine("Enter Bank id of the account :");
-                string bankIdNumber;
+                string? bankIdNumber;
 
                 try
                 {
                     bankIdNumber = Console.ReadLine();
                 }
-                catch (FormatException ex)
+                catch (FormatException)
                 {
                     Console.WriteLine("Enter valid Bank id number");
                     goto enterBankIdNumber;
                 }
-                if (bankIdNumber.Length < 3)
+                if (bankIdNumber!.Length < 3)
                 {
                     Console.WriteLine("Enter valid bank id");
                     goto enterBankIdNumber;
@@ -183,11 +180,11 @@ namespace BankManagement
 
                 }
             }
-            return null;
+            return null!;
         }
         public static Account BankAccountDetails(Bank bankObject)
         {
-            string accountId;
+            string? accountId;
         enterAccountId: Console.WriteLine("Enter Account Number");
 
             try
@@ -195,19 +192,19 @@ namespace BankManagement
                 accountId = Console.ReadLine();
 
             }
-            catch (FormatException ex)
+            catch (FormatException)
             {
                 Console.WriteLine("Enter valid Account number");
                 goto enterAccountId;
             }
-            if (accountId.Length < 3)
+            if (accountId!.Length < 3)
             {
                 Console.WriteLine("Enter valid account number");
                 goto enterAccountId;
             }
             Account ac = new Account();
             bool isAccountExist = false;
-            string accountPassword;
+            string? accountPassword;
         enterAccountPassword: Console.WriteLine("Enter Account Password");
 
             try
@@ -215,19 +212,19 @@ namespace BankManagement
                 accountPassword = Console.ReadLine();
 
             }
-            catch (FormatException ex)
+            catch (FormatException)
             {
                 Console.WriteLine("Enter valid Account Password");
                 goto enterAccountPassword;
             }
-            if (accountPassword.Length < 8 || accountPassword.Length > 15)
+            if (accountPassword!.Length < 8 || accountPassword.Length > 15)
             {
                 Console.WriteLine("Enter valid account password");
                 goto enterAccountPassword;
             }
             foreach (Account st in bankObject.accounts)
             {
-                if (st.AccountNumber == accountId && st.AccountPassWord == accountPassword)
+                if (st.AccountNumber == accountId && st.PassWord == accountPassword)
                 {
                     isAccountExist = true;
                     break;
@@ -236,7 +233,7 @@ namespace BankManagement
             }
             if (isAccountExist == true)
             {
-                ac = bankObject.accounts.Find(x => x.AccountNumber == accountId);
+                ac = bankObject.accounts.Find(x => x.AccountNumber == accountId)!;
                 return ac;
             }
             else
@@ -244,7 +241,7 @@ namespace BankManagement
                 Console.WriteLine("Account not available");
             }
 
-            return null;
+            return null!;
 
         }
         public static void UpdateDetails(Bank bankObject,Account ac, int userDetails)
@@ -252,18 +249,18 @@ namespace BankManagement
             if (userDetails == 1)
             {
                 Console.WriteLine("Enter user name");
-                ac.AccountUserName = Console.ReadLine();
+                ac.UserName = Console.ReadLine();
             }
             else
             {
                 Console.WriteLine("Enter user city");
-                ac.AccountUserCity = Console.ReadLine();
+                ac.UserCity = Console.ReadLine();
             }
 
         }
         public static void ViewAccount(Bank bankObject,Account ac)
         {
-            Console.WriteLine("Account user name: " + ac.AccountUserName + " User City: " + ac.AccountUserCity);
+            Console.WriteLine("Account user name: " + ac.UserName + " User City: " + ac.UserCity);
         }
         public static void DeleteAccount(Bank bankObject, Account ac)
         {
@@ -277,9 +274,9 @@ namespace BankManagement
             {
                 Console.WriteLine("Currency name: " + currency.Key);
             }
-            string currencyName;
+            string? currencyName;
         enterCurrencyName: Console.WriteLine("Enter Currency Name: ");
-            currencyName = Console.ReadLine().ToUpper();
+            currencyName = Console.ReadLine()!.ToUpper();
             Regex r = new Regex(nameRegex);
 
             if (!r.IsMatch(currencyName) || currencyName == "")
@@ -308,7 +305,7 @@ namespace BankManagement
             {
                 depositAmount = Convert.ToInt32(Console.ReadLine());
             }
-            catch (FormatException ex)
+            catch (FormatException)
             {
                 Console.WriteLine("Enter valid Amount");
                 goto enterDepositAmount;
@@ -334,7 +331,7 @@ namespace BankManagement
             {
                 withdrawAmount = Convert.ToInt32(Console.ReadLine());
             }
-            catch (FormatException ex)
+            catch (FormatException)
             {
                 Console.WriteLine("Enter valid Amount");
                 goto enterWithdrawAmount;
@@ -346,13 +343,13 @@ namespace BankManagement
         }
         public static void AcceptedCurency(Bank bankObject)
         {
-            string currencyName;
+            string? currencyName;
 
         enterCurrencyName: Console.WriteLine("Enter Currency Name: ");
             currencyName = Console.ReadLine();
             Regex r = new Regex(nameRegex);
 
-            if (!r.IsMatch(currencyName) || currencyName == "")
+            if (!r.IsMatch(currencyName!) || currencyName == "")
             {
                 Console.WriteLine("Enter string as name");
                 goto enterCurrencyName;
@@ -367,7 +364,7 @@ namespace BankManagement
                 currencyRatio = Convert.ToDouble(Console.ReadLine());
 
             }
-            catch (FormatException ex)
+            catch (FormatException)
             {
                 Console.WriteLine("Enter valid ratio");
                 goto enterCurrencyRatio;
@@ -379,14 +376,14 @@ namespace BankManagement
             }
             foreach (var currency in bankObject.AcceptableCurrency.Keys)
             {
-                if (currency == currencyName.ToUpper())
+                if (currency == currencyName!.ToUpper())
                 {
                     Console.WriteLine("Currency type already exists");
                     goto enterCurrencyName;
                 }
             }
 
-            bankObject.AcceptableCurrency.Add(currencyName.ToUpper(), currencyRatio);
+            bankObject.AcceptableCurrency.Add(currencyName!.ToUpper(), currencyRatio);
 
         }
 
@@ -400,18 +397,18 @@ namespace BankManagement
 
 
                 Console.WriteLine("Enter Bank id of the reciever account :");
-                string recieverBankIdnumber;
+                string? recieverBankIdnumber;
 
                 try
                 {
                     recieverBankIdnumber = Console.ReadLine();
                 }
-                catch (FormatException ex)
+                catch (FormatException)
                 {
                     Console.WriteLine("Enter valid Bank id number");
                     goto enterRecieverBankIdNumber;
                 }
-                if (recieverBankIdnumber.Length < 3)
+                if (recieverBankIdnumber!.Length < 3)
                 {
                     Console.WriteLine("Enter valid bank id");
                     goto enterRecieverBankIdNumber;
@@ -431,7 +428,7 @@ namespace BankManagement
                 {
                     Bank recieverBankObject = BankManagement.GetBankById(recieverBankIdnumber);
                     Account recieverAccount = new Account();
-                    string recieverAccountId;
+                    string? recieverAccountId;
                 enterRecieverAccountId: Console.WriteLine("Enter reciever Account Number");
 
                     try
@@ -439,12 +436,12 @@ namespace BankManagement
                         recieverAccountId = Console.ReadLine();
 
                     }
-                    catch (FormatException ex)
+                    catch (FormatException)
                     {
                         Console.WriteLine("Enter valid Account number");
                         goto enterRecieverAccountId;
                     }
-                    if (recieverAccountId.Length < 3)
+                    if (recieverAccountId!.Length < 3)
                     {
                         Console.WriteLine("Enter valid account number");
                         goto enterRecieverAccountId;
@@ -471,7 +468,7 @@ namespace BankManagement
                         {
 
 
-                            rac = recieverBankObject.accounts.Find(x => x.AccountNumber == recieverAccountId);
+                            rac = recieverBankObject.accounts.Find(x => x.AccountNumber == recieverAccountId)!;
                         enterAmountToTransfer:
 
 
@@ -484,7 +481,7 @@ namespace BankManagement
                                 transferAmount = Convert.ToInt32(Console.ReadLine());
 
                             }
-                            catch (FormatException ex)
+                            catch (FormatException)
                             {
                                 Console.WriteLine("Enter valid Amount");
                                 goto enterAmountToTransfer;
@@ -522,18 +519,18 @@ namespace BankManagement
                                 string transactionId = "TXN" + ac.IdOfBank + ac.AccountNumber + DateTime.Now.ToString("ddMMyyyy");
                                 TransactionHistory senderTransactionHistories = new TransactionHistory();
                                 senderTransactionHistories.TransactionId = transactionId;
-                                senderTransactionHistories.SenderBankId = ac.IdOfBank;
-                                senderTransactionHistories.SenderAccountId = ac.AccountNumber;
-                                senderTransactionHistories.RecieverBankId = rac.IdOfBank;
+                                senderTransactionHistories.SenderBankId = ac.IdOfBank!;
+                                senderTransactionHistories.SenderAccountId = ac.AccountNumber!;
+                                senderTransactionHistories.RecieverBankId = rac.IdOfBank!;
                                 senderTransactionHistories.RecieverAccountId += rac.AccountNumber;
                                 senderTransactionHistories.TransactionAmount = transferAmount;
                                 senderTransactionHistories.TransactionType = "sent";
                                 ac.TransactionHistoryData.Add(senderTransactionHistories);
                                 TransactionHistory recieverTransactionHistories = new TransactionHistory();
                                 recieverTransactionHistories.TransactionId = transactionId;
-                                recieverTransactionHistories.SenderBankId = ac.IdOfBank;
-                                recieverTransactionHistories.SenderAccountId = ac.AccountNumber;
-                                recieverTransactionHistories.RecieverBankId = rac.IdOfBank;
+                                recieverTransactionHistories.SenderBankId = ac.IdOfBank!;
+                                recieverTransactionHistories.SenderAccountId = ac.AccountNumber!;
+                                recieverTransactionHistories.RecieverBankId = rac.IdOfBank!;
                                 recieverTransactionHistories.RecieverAccountId += rac.AccountNumber;
                                 recieverTransactionHistories.TransactionAmount = transferAmount;
                                 recieverTransactionHistories.TransactionType = "received";
@@ -578,7 +575,7 @@ namespace BankManagement
 
         public static void TransactionRevert(Bank bankObject, Account ac)
         {
-            string transactionId;
+            string? transactionId;
             string receiverBankId = "";
             string receieverAccountId = "";
             double receieverAmount = 0;
@@ -598,7 +595,7 @@ namespace BankManagement
             }
             Account rac = new Account();
             Bank recieverBankObject = BankManagement.GetBankById(receiverBankId);
-            rac = recieverBankObject.accounts.Find(x => x.AccountNumber == receieverAccountId);
+            rac = recieverBankObject.accounts.Find(x => x.AccountNumber == receieverAccountId)!;
             foreach (var recieverTransaction in rac.TransactionHistoryData)
             {
                 if (transactionId == recieverTransaction.TransactionId)
@@ -616,6 +613,47 @@ namespace BankManagement
         public static void BalanceEnquiry(Bank bankObject, Account ac)
         {
             Console.WriteLine("Your account balance is: " + ac.AccountAmount);
+
+        }
+        public static void BankStaffLogin()
+        {
+            BankStaff bankStaff = new BankStaff();
+            string? staffUserName;
+        enterUserName: Console.WriteLine("Enter Bank Staff User Name");
+
+            try
+            {
+                staffUserName = Console.ReadLine();
+
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Enter valid User Name");
+                goto enterUserName;
+            }
+            if (bankStaff.UserName != staffUserName)
+            {
+                Console.WriteLine("Enter valid User name");
+                goto enterUserName;
+            }
+            string? staffPassword;
+        enterStaffPassword: Console.WriteLine("Enter Staff Password");
+
+            try
+            {
+                staffPassword = Console.ReadLine();
+
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Enter valid Password");
+                goto enterStaffPassword;
+            }
+            if (bankStaff.PassWord != staffPassword)
+            {
+                Console.WriteLine("Enter valid account password");
+                goto enterStaffPassword;
+            }
 
         }
     }

@@ -7,8 +7,8 @@ namespace BankManagement
     public class Bank
     {
 
-        public string BankId { get; set; }
-        public string BankName { get; set; }
+        public string? BankId { get; set; }
+        public string? BankName { get; set; }
         public double SameBankRtgs = 0;
         public double SameBankImps = 0.05;
         public double DifferentBankRtgs = 0.02;
@@ -23,22 +23,22 @@ namespace BankManagement
         public static void AddBank()
         {
             Bank bank = new Bank();
-            string bankName;
+            string? bankName;
         enterBankName: Console.WriteLine("Enter bank name:");
             bankName = Console.ReadLine();
             string regexForname = @"^[a-zA-Z ]+$";
             Regex r = new Regex(regexForname);
 
-            if (!r.IsMatch(bankName) || bankName == "")
+            if (!r.IsMatch(bankName!) || bankName == "")
             {
                 Console.WriteLine("Enter string as name");
                 goto enterBankName;
             }
             else
             {
-                bank.BankName = bankName;
+                bank.BankName = bankName!;
             }
-            if (bankName.Length < 3)
+            if (bankName!.Length < 3)
             {
                 Console.WriteLine("Bank name should be more than 3 letters");
                 goto enterBankName;

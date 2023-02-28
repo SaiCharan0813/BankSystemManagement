@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
-
 namespace BankManagement
 {
     public class BankManagement
@@ -9,7 +7,7 @@ namespace BankManagement
         public static List<Bank> banks = new List<Bank>();
         public static Bank GetBankById(string bankId)
         {
-            return banks.Find(x => x.BankId == bankId);
+            return banks.Find(x => x.BankId == bankId)!;
         }
         public static void DisplayAllBanks()
         {

@@ -1,7 +1,7 @@
 ﻿using BankManagement;
+using BankSystemManagement;
 using System;
 using System.Collections.Generic;
-using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
 namespace BankManagement
 {
@@ -13,6 +13,7 @@ namespace BankManagement
             int userChoice;
             bool isUserChoiceValid = false;
             int userDetailsChoice;
+          
             while (isUserChoiceValid != true)
             {
 
@@ -22,7 +23,7 @@ namespace BankManagement
                 {
                     userChoice = Convert.ToInt32(Console.ReadLine());
                 }
-                catch (FormatException ex)
+                catch (FormatException)
                 {
                     Console.WriteLine("Enter valid choice");
                     goto enterUserChoice;
@@ -46,30 +47,31 @@ namespace BankManagement
                         BankManagement.DisplayAllBanks();
                         break;
                     case 3:
-                        int loginChoice = 0;
+                        Constants.UserType loginChoice;
                         if (BankManagement.banks.Count > 0)
                         {
 
 
-                        enterLoginchoice: Console.WriteLine("1.Bank Staff\n2.User");
+                        enterLoginChoice: Console.WriteLine("1.Bank Staff\n2.User");
 
                             try
                             {
-                                loginChoice = Convert.ToInt32(Console.ReadLine());
+                                loginChoice = (Constants.UserType)Convert.ToInt32(Console.ReadLine());
                             }
-                            catch (FormatException ex)
+                            catch (FormatException)
                             {
                                 Console.WriteLine("Enter valid choice");
-                                goto enterUserChoice;
+                                goto enterLoginChoice;
                             }
-                            if (loginChoice < 1 && loginChoice > 2)
+                            if ((int)loginChoice < 1 && (int)loginChoice > 2)
                             {
                                 Console.WriteLine("Enter valid choice");
-                                goto enterUserChoice;
+                                goto enterLoginChoice;
                             }
                             switch (loginChoice)
                             {
-                                case 1:
+                                case Constants.UserType.BankStaff:
+                                    Account.BankStaffLogin();
                                     int staffChoice;
                                 enterStaffchoice: Console.WriteLine("1.Create Account\n2.Delete Account\n3.Add new currency\n4.Revert Transfer\n5.Transaction History of an account\n6.Update Details\n7.View Account");
 
@@ -77,7 +79,7 @@ namespace BankManagement
                                     {
                                         staffChoice = Convert.ToInt32(Console.ReadLine());
                                     }
-                                    catch (FormatException ex)
+                                    catch (FormatException)
                                     {
                                         Console.WriteLine("Enter valid choice");
                                         goto enterStaffchoice;
@@ -142,8 +144,8 @@ namespace BankManagement
                                     }
                                     break;
 
-                                case 2:
-                                    int accountUserChoice;
+                                case Constants.UserType.User:
+                                    Constants.TransactionType accountUserChoice;
                                     Bank userBank = Account.Bankdetails();
                                     Account userAccount = Account.BankAccountDetails(userBank);
 
@@ -155,33 +157,33 @@ namespace BankManagement
 
                                         try
                                         {
-                                            accountUserChoice = Convert.ToInt32(Console.ReadLine());
+                                            accountUserChoice = (Constants.TransactionType)Convert.ToInt32(Console.ReadLine());
                                         }
-                                        catch (FormatException ex)
+                                        catch (FormatException)
                                         {
                                             Console.WriteLine("Enter valid choice");
                                             goto enterAccountUserChoice;
                                         }
-                                        if (accountUserChoice < 1 && accountUserChoice > 4)
+                                        if ((int)accountUserChoice < 1 && (int)accountUserChoice > 4)
                                         {
                                             Console.WriteLine("Enter valid choice");
                                             goto enterAccountUserChoice;
                                         }
                                         switch (accountUserChoice)
                                         {
-                                            case 1:
+                                            case Constants.TransactionType.Deposit:
                                                 Account.DepositAmount(userBank, userAccount);
                                                 break;
-                                            case 2:
+                                            case Constants.TransactionType.WithDraw:
                                                 Account.WithdrawAmount(userBank, userAccount);
                                                 break;
-                                            case 3:
+                                            case Constants.TransactionType.TranferFunds:
                                                 Account.TransferFunds(userBank, userAccount);
                                                 break;
-                                            case 4:
+                                            case Constants.TransactionType.TransactionHistory:
                                                 Account.TransactionHistory(userBank, userAccount);
                                                 break;
-                                            case 5:
+                                            case Constants.TransactionType.BalanceEnquiry:
                                                 Account.BalanceEnquiry(userBank, userAccount);
                                                 break;
                                         }
