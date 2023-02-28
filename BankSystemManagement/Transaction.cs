@@ -1,6 +1,6 @@
 ﻿namespace BankManagement
 {
-    public class TransactionHistory
+    public class Transaction
     {
         public string? SenderAccountId { get; set; }
         public string? SenderBankId { get; set; }

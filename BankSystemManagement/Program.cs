@@ -71,7 +71,7 @@ namespace BankManagement
                             switch (loginChoice)
                             {
                                 case Constants.UserType.BankStaff:
-                                    Account.BankStaffLogin();
+                                    AccountHolder.BankStaffLogin();
                                     int staffChoice;
                                 enterStaffchoice: Console.WriteLine("1.Create Account\n2.Delete Account\n3.Add new currency\n4.Revert Transfer\n5.Transaction History of an account\n6.Update Details\n7.View Account");
 
@@ -93,27 +93,27 @@ namespace BankManagement
                                     switch (staffChoice)
                                     {
                                         case 1:
-                                            Account.AddAccount();
+                                            AccountHolder.AddAccount();
                                             break;
                                         case 2:
-                                            Bank usersBank = Account.Bankdetails();
-                                            Account usersAccount = Account.BankAccountDetails(usersBank);
-                                            Account.DeleteAccount(usersBank, usersAccount);
+                                            Bank usersBank = AccountHolder.Bankdetails();
+                                            AccountHolder usersAccount = AccountHolder.BankAccountDetails(usersBank);
+                                            AccountHolder.DeleteAccount(usersBank, usersAccount);
                                             break;
                                         case 3:
-                                            usersBank = Account.Bankdetails();
+                                            usersBank = AccountHolder.Bankdetails();
 
-                                            Account.AcceptedCurency(usersBank);
+                                            AccountHolder.AcceptedCurency(usersBank);
                                             break;
                                         case 4:
-                                            usersBank = Account.Bankdetails();
-                                            usersAccount = Account.BankAccountDetails(usersBank);
-                                            Account.TransactionRevert(usersBank, usersAccount);
+                                            usersBank = AccountHolder.Bankdetails();
+                                            usersAccount = AccountHolder.BankAccountDetails(usersBank);
+                                            AccountHolder.TransactionRevert(usersBank, usersAccount);
                                             break;
                                         case 5:
-                                            usersBank = Account.Bankdetails();
-                                            usersAccount = Account.BankAccountDetails(usersBank);
-                                            Account.TransactionHistory(usersBank, usersAccount);
+                                            usersBank = AccountHolder.Bankdetails();
+                                            usersAccount = AccountHolder.BankAccountDetails(usersBank);
+                                            AccountHolder.TransactionHistory(usersBank, usersAccount);
                                             break;
                                         case 6:
                                         chooseUpdateDetailsType: Console.WriteLine("1.User Name\n2.city");
@@ -132,22 +132,22 @@ namespace BankManagement
                                                 Console.WriteLine("Enter valid choice");
                                                 goto chooseUpdateDetailsType;
                                             }
-                                            usersBank = Account.Bankdetails();
-                                            usersAccount = Account.BankAccountDetails(usersBank);
-                                            Account.UpdateDetails(usersBank,usersAccount,userDetailsChoice);
+                                            usersBank = AccountHolder.Bankdetails();
+                                            usersAccount = AccountHolder.BankAccountDetails(usersBank);
+                                            AccountHolder.UpdateDetails(usersBank,usersAccount,userDetailsChoice);
                                             break;
                                             case 7:
-                                            usersBank = Account.Bankdetails();
-                                            usersAccount = Account.BankAccountDetails(usersBank);
-                                            Account.ViewAccount(usersBank,usersAccount);
+                                            usersBank = AccountHolder.Bankdetails();
+                                            usersAccount = AccountHolder.BankAccountDetails(usersBank);
+                                            AccountHolder.ViewAccount(usersBank,usersAccount);
                                             break;
                                     }
                                     break;
 
                                 case Constants.UserType.User:
                                     Constants.TransactionType accountUserChoice;
-                                    Bank userBank = Account.Bankdetails();
-                                    Account userAccount = Account.BankAccountDetails(userBank);
+                                    Bank userBank = AccountHolder.Bankdetails();
+                                    AccountHolder userAccount = AccountHolder.BankAccountDetails(userBank);
 
                                     if (userAccount != null)
                                     {
@@ -172,19 +172,19 @@ namespace BankManagement
                                         switch (accountUserChoice)
                                         {
                                             case Constants.TransactionType.Deposit:
-                                                Account.DepositAmount(userBank, userAccount);
+                                                AccountHolder.DepositAmount(userBank, userAccount);
                                                 break;
                                             case Constants.TransactionType.WithDraw:
-                                                Account.WithdrawAmount(userBank, userAccount);
+                                                AccountHolder.WithdrawAmount(userBank, userAccount);
                                                 break;
                                             case Constants.TransactionType.TranferFunds:
-                                                Account.TransferFunds(userBank, userAccount);
+                                                AccountHolder.TransferFunds(userBank, userAccount);
                                                 break;
                                             case Constants.TransactionType.TransactionHistory:
-                                                Account.TransactionHistory(userBank, userAccount);
+                                                AccountHolder.TransactionHistory(userBank, userAccount);
                                                 break;
                                             case Constants.TransactionType.BalanceEnquiry:
-                                                Account.BalanceEnquiry(userBank, userAccount);
+                                                AccountHolder.BalanceEnquiry(userBank, userAccount);
                                                 break;
                                         }
 

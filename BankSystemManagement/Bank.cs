@@ -19,7 +19,7 @@ namespace BankManagement
             { "INR",1 }
         };
 
-        public List<Account> accounts = new List<Account>();
+        public List<AccountHolder> accounts = new List<AccountHolder>();
         public static void AddBank()
         {
             Bank bank = new Bank();

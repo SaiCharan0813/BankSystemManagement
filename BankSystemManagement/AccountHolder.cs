@@ -6,14 +6,14 @@ using BankSystemManagement;
 
 namespace BankManagement
 {
-    public class Account:User
+    public class AccountHolder:User
     {
         public string? AccountNumber { get; set; }
         public string? IdOfBank { get; set; }
         public string? AccountHolderName { get; set; }
         public double AccountAmount = 0;
         const string nameRegex = @"^[a-zA-Z ]+$";
-        public List<TransactionHistory> TransactionHistoryData = new List<TransactionHistory>();
+        public List<Transaction> TransactionHistoryData = new List<Transaction>();
         public static void AddAccount()
         {
 
@@ -23,7 +23,7 @@ namespace BankManagement
                 Console.WriteLine("Bank id is: " + bank.BankId + "Bank name is: " + bank.BankName);
             }
 
-            Account ac = new Account();
+            AccountHolder ac = new AccountHolder();
             if (BankManagement.banks.Count > 0)
             {
             enterBankIdNumber:
@@ -182,7 +182,7 @@ namespace BankManagement
             }
             return null!;
         }
-        public static Account BankAccountDetails(Bank bankObject)
+        public static AccountHolder BankAccountDetails(Bank bankObject)
         {
             string? accountId;
         enterAccountId: Console.WriteLine("Enter Account Number");
@@ -202,7 +202,7 @@ namespace BankManagement
                 Console.WriteLine("Enter valid account number");
                 goto enterAccountId;
             }
-            Account ac = new Account();
+            AccountHolder ac = new AccountHolder();
             bool isAccountExist = false;
             string? accountPassword;
         enterAccountPassword: Console.WriteLine("Enter Account Password");
@@ -222,7 +222,7 @@ namespace BankManagement
                 Console.WriteLine("Enter valid account password");
                 goto enterAccountPassword;
             }
-            foreach (Account st in bankObject.accounts)
+            foreach (AccountHolder st in bankObject.accounts)
             {
                 if (st.AccountNumber == accountId && st.PassWord == accountPassword)
                 {
@@ -244,7 +244,7 @@ namespace BankManagement
             return null!;
 
         }
-        public static void UpdateDetails(Bank bankObject,Account ac, int userDetails)
+        public static void UpdateDetails(Bank bankObject,AccountHolder ac, int userDetails)
         {
             if (userDetails == 1)
             {
@@ -258,16 +258,16 @@ namespace BankManagement
             }
 
         }
-        public static void ViewAccount(Bank bankObject,Account ac)
+        public static void ViewAccount(Bank bankObject,AccountHolder ac)
         {
             Console.WriteLine("Account user name: " + ac.UserName + " User City: " + ac.UserCity);
         }
-        public static void DeleteAccount(Bank bankObject, Account ac)
+        public static void DeleteAccount(Bank bankObject, AccountHolder ac)
         {
             bankObject.accounts.Remove(ac);
         }
 
-        public static void DepositAmount(Bank bankObject, Account ac)
+        public static void DepositAmount(Bank bankObject, AccountHolder ac)
         {
 
             foreach (var currency in bankObject.AcceptableCurrency)
@@ -319,7 +319,7 @@ namespace BankManagement
 
 
         }
-        public static void WithdrawAmount(Bank bankObject, Account ac)
+        public static void WithdrawAmount(Bank bankObject, AccountHolder ac)
         {
         enterWithdrawAmount:
 
@@ -388,7 +388,7 @@ namespace BankManagement
         }
 
 
-        public static void TransferFunds(Bank senderBank, Account ac)
+        public static void TransferFunds(Bank senderBank, AccountHolder ac)
         {
             Bank recieverBank = new Bank();
             if (BankManagement.banks.Count > 0)
@@ -427,7 +427,7 @@ namespace BankManagement
                 if (isRecieverBankExist == true)
                 {
                     Bank recieverBankObject = BankManagement.GetBankById(recieverBankIdnumber);
-                    Account recieverAccount = new Account();
+                    AccountHolder recieverAccount = new AccountHolder();
                     string? recieverAccountId;
                 enterRecieverAccountId: Console.WriteLine("Enter reciever Account Number");
 
@@ -446,9 +446,9 @@ namespace BankManagement
                         Console.WriteLine("Enter valid account number");
                         goto enterRecieverAccountId;
                     }
-                    Account rac = new Account();
+                    AccountHolder rac = new AccountHolder();
                     bool isRecieverAccountExist = false;
-                    foreach (Account st in recieverBankObject.accounts)
+                    foreach (AccountHolder st in recieverBankObject.accounts)
                     {
                         if (st.AccountNumber == recieverAccountId)
                         {
@@ -517,7 +517,7 @@ namespace BankManagement
                                 ac.AccountAmount -= totalAmount;
                                 rac.AccountAmount += transferAmount;
                                 string transactionId = "TXN" + ac.IdOfBank + ac.AccountNumber + DateTime.Now.ToString("ddMMyyyy");
-                                TransactionHistory senderTransactionHistories = new TransactionHistory();
+                                Transaction senderTransactionHistories = new Transaction();
                                 senderTransactionHistories.TransactionId = transactionId;
                                 senderTransactionHistories.SenderBankId = ac.IdOfBank!;
                                 senderTransactionHistories.SenderAccountId = ac.AccountNumber!;
@@ -526,7 +526,7 @@ namespace BankManagement
                                 senderTransactionHistories.TransactionAmount = transferAmount;
                                 senderTransactionHistories.TransactionType = "sent";
                                 ac.TransactionHistoryData.Add(senderTransactionHistories);
-                                TransactionHistory recieverTransactionHistories = new TransactionHistory();
+                                Transaction recieverTransactionHistories = new Transaction();
                                 recieverTransactionHistories.TransactionId = transactionId;
                                 recieverTransactionHistories.SenderBankId = ac.IdOfBank!;
                                 recieverTransactionHistories.SenderAccountId = ac.AccountNumber!;
@@ -556,7 +556,7 @@ namespace BankManagement
             }
 
         }
-        public static void TransactionHistory(Bank bankObject, Account ac)
+        public static void TransactionHistory(Bank bankObject, AccountHolder ac)
         {
             if(ac.TransactionHistoryData.Count== 0) { 
                 Console.WriteLine("No Transaction History"); 
@@ -573,7 +573,7 @@ namespace BankManagement
 
 
 
-        public static void TransactionRevert(Bank bankObject, Account ac)
+        public static void TransactionRevert(Bank bankObject, AccountHolder ac)
         {
             string? transactionId;
             string receiverBankId = "";
@@ -593,7 +593,7 @@ namespace BankManagement
 
                 }
             }
-            Account rac = new Account();
+            AccountHolder rac = new AccountHolder();
             Bank recieverBankObject = BankManagement.GetBankById(receiverBankId);
             rac = recieverBankObject.accounts.Find(x => x.AccountNumber == receieverAccountId)!;
             foreach (var recieverTransaction in rac.TransactionHistoryData)
@@ -610,7 +610,7 @@ namespace BankManagement
 
 
 
-        public static void BalanceEnquiry(Bank bankObject, Account ac)
+        public static void BalanceEnquiry(Bank bankObject, AccountHolder ac)
         {
             Console.WriteLine("Your account balance is: " + ac.AccountAmount);
 
