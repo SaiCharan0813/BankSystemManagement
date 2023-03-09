@@ -54,6 +54,9 @@ namespace BankManagement
             }
 
             BankManagement.banks.Add(bank);
+            string folderName = @"C:\Users\Sai Charan Reddy\source\repos\BankSystemManagement\" + bank.BankName;
+
+            System.IO.Directory.CreateDirectory(folderName);
 
             Console.WriteLine("-----Welcome to " + bank.BankName.ToUpperInvariant() + " Bank with an id " + bank.BankId + "--------");
 

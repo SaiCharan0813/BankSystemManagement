@@ -129,6 +129,10 @@ namespace BankManagement
                         }
                     }
                     bankObject.accounts.Add(ac);
+                    string fileName = @"C:\Users\Sai Charan Reddy\source\repos\BankSystemManagement\"+bankObject.BankName+"\\"+ac.AccountNumber+".txt";
+
+                    System.IO.File.Create(fileName);
+
 
                 }
 
@@ -535,6 +539,16 @@ namespace BankManagement
                                 recieverTransactionHistories.TransactionAmount = transferAmount;
                                 recieverTransactionHistories.TransactionType = "received";
                                 rac.TransactionHistoryData.Add(recieverTransactionHistories);
+                                string senderFileName = @"C:\Users\Sai Charan Reddy\source\repos\BankSystemManagement\" + senderBank.BankName + "\\" + ac.AccountNumber + ".txt";
+                                string recieverFileName = @"C:\Users\Sai Charan Reddy\source\repos\BankSystemManagement\" + recieverBank.BankName + "\\" + ac.AccountNumber + ".txt";
+
+                                string senderTransactiontext =
+                                    "The amount of " + transferAmount +" sent to "+rac.AccountNumber;
+                                string recieverTransactiontext =
+                                   "The amount of " + transferAmount+"recieved from "+ac.AccountNumber;
+
+                                File.WriteAllText(senderFileName, senderTransactiontext);
+                                File.WriteAllText(recieverFileName, recieverTransactiontext);
                             }
                             else
                             {
